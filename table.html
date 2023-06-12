@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editable Table</title>
+  
+  <script src="https://unpkg.com/react@18/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js" crossorigin></script>
+</head>
+<body>
+    <h1>hello</h1>
+  <div id="root"></div>
+
+  <script>
+    // Define the EditableTable component
+    function EditableTable() {
+      const [tableData, setTableData] = React.useState([
+        { id: 1, name: "John Doe", email: "john@example.com" },
+        { id: 2, name: "Jane Smith", email: "jane@example.com" },
+        { id: 3, name: "Bob Johnson", email: "bob@example.com" }
+      ]);
+
+      // Handle cell value change
+      const handleCellChange = (e, rowIndex, columnName) => {
+        const newData = [...tableData];
+        newData[rowIndex][columnName] = e.target.value;
+        setTableData(newData);
+      };
+
+      // Handle form submission
+      const handleSubmit = (e) => {
+        e.preventDefault();
+        // Send the tableData to the API endpoint or perform further processing
+        console.log(tableData);
+      };
+
+      // Render the table
+      const renderTable = () => (
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Name</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            {tableData.map((row, rowIndex) => (
+              <tr key={row.id}>
+                <td>{row.id}</td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.name}
+                    onChange={(e) => handleCellChange(e, rowIndex, "name")}
+                  />
+                </td>
+                <td>
+                  <input
+                    type="text"
+                    value={row.email}
+                    onChange={(e) => handleCellChange(e, rowIndex, "email")}
+                  />
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      );
+
+      return (
+        <form onSubmit={handleSubmit}>
+          {renderTable()}
+          <button type="submit">Submit</button>
+        </form>
+      );
+    }
+
+    // Render the EditableTable component to the DOM
+    ReactDOM.render(<EditableTable />, document.getElementById("root"));
+  </script>
+</body>
+</html>
